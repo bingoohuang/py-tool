@@ -1,0 +1,409 @@
+登录：
+ Time：3 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.queryUserInfoByAccount
+Execute SQL：SELECT u.id, u.account_type, u.uid, u.head_img_url, r.account, u.status, u.password FROM uc_user u JOIN uc_user_relation r ON u.id = r.user_id WHERE u.account_type = 'MOBILE' AND r.account = '18511779931'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.admin.mapper.role.SysRoleMapper.listRolesByUserId
+Execute SQL：SELECT r.* FROM sys_role r, uc_emprole_relation ur WHERE r.role_id = ur.role_id AND r.del_flag = 0 AND ur.user_id = '1146408901900779521' AND ur.ent_id = '1'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.admin.mapper.menu.SysMenuMapper.listMenusByRoleId
+Execute SQL：SELECT sys_menu.* FROM sys_menu LEFT JOIN sys_role_menu ON sys_menu.menu_id = sys_role_menu.menu_id WHERE sys_menu.del_flag = 0 AND sys_role_menu.role_id = '1145900132244393994'
+
+2019-07-05 09:34:03.329  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:AE86FD09E3353A2349133040A0CEABC7 ,__trace_id :127.0.0.1-1562290443.319-8397-3389
+2019-07-05 09:34:03.329  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/person/getUserExtendInfo开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+2019-07-05 09:34:03.344  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/person/getUserExtendInfo执行完毕
+2019-07-05 09:34:03.459  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:D73A69B67CBC88B67A7D3E25BE8C0B78 ,__trace_id :127.0.0.1-1562290443.449-8397-3389
+2019-07-05 09:34:03.459  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sysmenu/getMenuTree开始执行
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.menu.SysMenuMapper.getByRoleIds
+Execute SQL：SELECT DISTINCT sm.* FROM sys_menu sm INNER JOIN sys_role_menu srm ON sm.menu_id = srm.menu_id WHERE sm.del_flag = 0 AND srm.role_id IN ('1145900132244393994')
+
+2019-07-05 09:34:03.467  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sysmenu/getMenuTree执行完毕
+2019-07-05 09:34:03.572  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:93295D2D57D4B73EF95F3CFC82E6EE4A ,__trace_id :127.0.0.1-1562290443.562-8397-3384
+2019-07-05 09:34:03.572  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/document/getStatusCount开始执行
+ Time：0 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentStatusCount
+Execute SQL：SELECT count(*) AS num, 'draft' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.orgid = '1146408901900779521' AND t.status = '0' UNION ALL SELECT count(*) AS num, 'sign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE ss.orgid = '1146408901900779521' AND ss.signstate = '2' AND ss.signtype = '0') AND t.status = '1' UNION ALL SELECT count(*) AS num, 'othersign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE ss.orgid = '1146408901900779521' AND ((ss.signstate = '2' AND (totalsign - currentsign) != 1 AND ss.processtype != '1') OR (ss.signstate != '2' AND (totalsign - currentsign) != 0))) AND t.status = '1' UNION ALL SELECT count(*) AS num, 'complete' AS business FROM sc_ecdocument t WHERE t.status = '5' AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE ss.orgid = '1146408901900779521')
+
+2019-07-05 09:34:03.582  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/document/getStatusCount执行完毕
+2019-07-05 09:34:03.630  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:62602650D102A5D950449220C4D5E524 ,__trace_id :127.0.0.1-1562290443.621-8397-3387
+2019-07-05 09:34:03.630  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:93055803A457A4EE4B6B6F5E4DD17009 ,__trace_id :127.0.0.1-1562290443.621-8397-3385
+2019-07-05 09:34:03.630  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/notice/page开始执行
+2019-07-05 09:34:03.631  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/applyjoinent/getUserJoinAllEntInfo开始执行
+2019-07-05 09:34:03.631  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:4970455C7BFDF49E782E996E5AE0297E ,__trace_id :127.0.0.1-1562290443.623-8397-3388
+2019-07-05 09:34:03.631  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/person/getUserExtendInfo开始执行
+2019-07-05 09:34:03.632  INFO 5707 --- [io-10616-exec-8] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:3162A43177292F6F10CFB4C9F5945CCB ,__trace_id :127.0.0.1-1562290443.623-8397-3386
+2019-07-05 09:34:03.632  INFO 5707 --- [io-10616-exec-8] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/notice/new/count开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.enterprise.EmpEntRelationMapper.getUserJoinAllENtInfo
+Execute SQL：SELECT DISTINCT e.id, e.`name` FROM uc_empent_relation er JOIN uc_enterprise e ON e.id = er.ent_id AND e.del_flag = '0' AND er.emp_status = 'ENABLE' AND er.del_flag = '0' WHERE er.user_id = '1146408901900779521'
+
+2019-07-05 09:34:03.636  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/applyjoinent/getUserJoinAllEntInfo执行完毕
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectPage
+Execute SQL：SELECT id, enterprise_id, user_id, biz, biz_id, type, subject, content, serial_no, read_flag, create_by, create_time, update_time, update_by, del_flag FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' ORDER BY create_time DESC LIMIT 0,10
+
+2019-07-05 09:34:03.642  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/notice/page执行完毕
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' AND type = 'DOCUMENT'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+2019-07-05 09:34:03.652  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/person/getUserExtendInfo执行完毕
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' AND type = 'NORMAL'
+
+2019-07-05 09:34:03.653  INFO 5707 --- [io-10616-exec-8] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/notice/new/count执行完毕
+2019-07-05 09:34:03.668  INFO 5707 --- [io-10616-exec-9] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:24E44F460D1099C0F21A2D274ECC1AFB ,__trace_id :127.0.0.1-1562290443.659-8397-3400
+2019-07-05 09:34:03.669  INFO 5707 --- [io-10616-exec-9] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/document/meSignlist开始执行
+ Time：3 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentAndSingByCond
+Execute SQL：SELECT t.did, t.ecnum, t.dname, t.ecvalidity, t.watermark, t.processtype, t.senderid, t.sendername, t.totalsign, t.currentsign, t.status, t.sendtime, t.orgid, t.sendtype, t.note, update_by, t.create_time, t.signatorys, t.template_id, isposition FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE ss.orgid = '1146408901900779521' AND ss.signstate = '2' AND ss.signtype = '0') AND t.status = '1' ORDER BY sendtime DESC LIMIT 0,5
+
+2019-07-05 09:34:03.680  INFO 5707 --- [io-10616-exec-9] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/document/meSignlist执行完毕
+
+
+2019-07-05 09:35:10.878  INFO 5707 --- [io-10616-exec-5] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:2CA3270E7DDABF940F707C161054B7B4 ,__trace_id :127.0.0.1-1562290510.869-8397-3406
+2019-07-05 09:35:10.879  INFO 5707 --- [io-10616-exec-5] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/ecdocumentTemplate/page开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.documenttemplate.EcdocumentTemplateMapper.getEcdocumentTemplatePage
+Execute SQL：SELECT id, template_state, template_name, org_id, create_date, update_date, description FROM sc_ecdocument_template template WHERE template.org_id = '1146408901900779521' AND template.template_state = '1'
+
+2019-07-05 09:35:10.901  INFO 5707 --- [io-10616-exec-5] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/ecdocumentTemplate/page执行完毕
+
+
+
+确定：
+
+2019-07-05 09:35:31.673  INFO 5707 --- [io-10616-exec-7] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:54145EB12230902CED78A009F9EA45B4 ,__trace_id :127.0.0.1-1562290531.665-8397-3406
+2019-07-05 09:35:31.674  INFO 5707 --- [io-10616-exec-7] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/notice/new/count开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' AND type = 'DOCUMENT'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' AND type = 'NORMAL'
+
+2019-07-05 09:35:31.688  INFO 5707 --- [io-10616-exec-7] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/notice/new/count执行完毕
+2019-07-05 09:35:31.704  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:755B4625C5A32449D531332745B35BA0 ,__trace_id :127.0.0.1-1562290531.695-8397-3408
+2019-07-05 09:35:31.704  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/contact/person开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectList
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND name = '孟然' AND mobile = '18511779931'
+
+2019-07-05 09:35:31.710  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/contact/person执行完毕
+2019-07-05 09:35:31.713  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:DAD8E2463B958FBF581696CA07C40068 ,__trace_id :127.0.0.1-1562290531.704-8397-3409
+2019-07-05 09:35:31.714  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/contact开始执行
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146955736772050946', '0', '查询个人用户', 'econtract', '18511779931', '2019-07-05 09:35:31.71', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/contact/person', 'GET', 'time=%5B1562290531543%5D&__trace_id=%5B127.0.0.1-1562290531.695-8397-3408%5D&_realip=%5B60.247.93.190%5D&name=%5B%E5%AD%9F%E7%84%B6%5D&mobilePhone=%5B18511779931%5D&__v=%5Bv2%5D', 5)
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.ContactMapper.selectList
+Execute SQL：SELECT id, user_id, group_id, enterprise_id, contact_type, contact_id, contact_name, contact_license_number, create_by, create_time, update_time, update_by, del_flag FROM uc_contact WHERE del_flag = '0' AND user_id = '1146408901900779521' AND enterprise_id = '1' AND group_id = ''
+
+2019-07-05 09:35:31.721  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/contact执行完毕
+2019-07-05 09:35:31.724  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:8B75809366A09CA90AE51A4EBE289AAB ,__trace_id :127.0.0.1-1562290531.715-8397-3411
+2019-07-05 09:35:31.724  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/contactgroup开始执行
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146955736813993986', '0', '按照当前用户企业查询分组列表', 'econtract', '18511779931', '2019-07-05 09:35:31.721', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/contact', 'GET', 'time=%5B1562290531543%5D&__trace_id=%5B127.0.0.1-1562290531.704-8397-3409%5D&_realip=%5B60.247.93.190%5D&groupId=%5B%5D&__v=%5Bv2%5D', 7)
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.ContactGroupMapper.selectList
+Execute SQL：SELECT id, user_id, enterprise_id, group_name, create_by, create_time, update_time, update_by, del_flag FROM uc_contact_group WHERE del_flag = '0' AND user_id = '1146408901900779521' AND enterprise_id = '1'
+
+2019-07-05 09:35:31.729  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/contactgroup执行完毕
+ Time：3 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146955736847548418', '0', '按照当前用户企业查询分组列表', 'econtract', '18511779931', '2019-07-05 09:35:31.729', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/contactgroup', 'GET', 'time=%5B1562290531543%5D&__trace_id=%5B127.0.0.1-1562290531.715-8397-3411%5D&_realip=%5B60.247.93.190%5D&__v=%5Bv2%5D', 4)
+
+2019-07-05 09:35:31.829  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:4B217448F7CB2A9204CCB02929088ED7 ,__trace_id :127.0.0.1-1562290531.821-8397-3411
+2019-07-05 09:35:31.830  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/contact开始执行
+ Time：3 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.ContactMapper.selectList
+Execute SQL：SELECT id, user_id, group_id, enterprise_id, contact_type, contact_id, contact_name, contact_license_number, create_by, create_time, update_time, update_by, del_flag FROM uc_contact WHERE del_flag = '0' AND user_id = '1146408901900779521' AND enterprise_id = '1'
+
+2019-07-05 09:35:31.836  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/contact执行完毕
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146955737296338945', '0', '按照当前用户企业查询分组列表', 'econtract', '18511779931', '2019-07-05 09:35:31.835', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/contact', 'GET', 'time=%5B1562290531687%5D&__trace_id=%5B127.0.0.1-1562290531.821-8397-3411%5D&_realip=%5B60.247.93.190%5D&groupId=%5Ball%5D&__v=%5Bv2%5D', 5)
+
+
+
+
+上传1
+
+2019-07-05 09:36:48.535  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:C4C1EBB56E55D9C4C699FCB2C2BBC7C7 ,__trace_id :127.0.0.1-1562290608.487-8397-3428
+2019-07-05 09:36:48.536  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/documentatta/upload开始执行
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument_attachment (aid, attachmentname, attachmenttype, attachmentstate, filetype, source_url, convert_url) VALUES ('1146956059012038660', 'blank.pdf', '0', 'ADD', 'PDF', '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956059012038658.PDF', '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956059012038658.PDF')
+
+2019-07-05 09:36:48.551  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/documentatta/upload执行完毕
+
+
+上传2
+
+2019-07-05 09:37:07.276  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:98A1295C034EF20556680DDCD58508FD ,__trace_id :127.0.0.1-1562290627.268-8397-3428
+2019-07-05 09:37:07.276  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/documentatta/upload开始执行
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument_attachment (aid, attachmentname, attachmenttype, attachmentstate, filetype, source_url, convert_url) VALUES ('1146956137617489921', 'blank.pdf', '0', 'ADD', 'PDF', '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956137613295617.PDF', '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956137613295617.PDF')
+
+2019-07-05 09:37:07.291  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/documentatta/upload执行完毕
+
+
+下一步：
+
+2019-07-05 09:39:28.946  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:75650097F82CECE6DDC0A32706C6ED3E ,__trace_id :127.0.0.1-1562290768.94-8397-3428
+2019-07-05 09:39:28.946  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/document开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument (did, dname, ecnum, ecvalidity, orgid, status, create_time, processtype, del_flag, totalsign, currentsign, create_by, update_time, sendtime, sendtype, update_by, note, template_id, isposition, watermark) VALUES ('1146956731887452162', '黄进兵测试空白合同', 'GF201907054374592451', '2019-07-20', '1146408901900779521', '0', '2019-07-05 09:39:28.964', '1', '0', 1, 0, '18511779931', '2019-07-05 09:39:28.964', '2019-07-05 09:39:28.964', '0', '18511779931', '', '0', '1', '1')
+
+ Time：3 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatoryMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument_signatory (syid, ecdocumentid, signnum, certificatesnum, signatorytype, signtype, operator, operatorphone, signstate, orgid, dnumsignname, totalsign, currentsign, orgname, processtype) VALUES ('1146956731916812290', '1146956731887452162', '1', '220105198311232015', '0', '0', '', '', '2', '1146408901900779521', '黄进兵测试空白合同孟然', 1, 0, '孟然', '1')
+
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.updateById
+Execute SQL：UPDATE sc_ecdocument SET dname = '黄进兵测试空白合同', ecnum = 'GF201907054374592451', ecvalidity = '2019-07-20', orgid = '1146408901900779521', status = '0', create_time = '2019-07-05 09:39:28.964', processtype = '1', del_flag = '0', totalsign = 1, currentsign = 0, create_by = '18511779931', update_time = '2019-07-05 09:39:28.964', sendtime = '2019-07-05 09:39:28.964', sendtype = '0', update_by = '18511779931', note = '', signatorys = '[{"currentSign":0,"orgName":"孟然","dNumSignName":"黄进兵测试空白合同孟然","operatorPhone":"","signState":"2","operator":"","orgId":"1146408901900779521","signatoryType":"0","signNum":"1","ecDocumentId":"1146956731887452162","certificatesNum":"220105198311232015","syId":"1146956731916812290","totalSign":1,"signType":"0","processType":"1"}]', template_id = '0', isposition = '1', watermark = '1' WHERE did = '1146956731887452162'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectById
+Execute SQL：SELECT aid, ecdocumentid, attachmentname, attachmentcode, attachmenttype, attachmentstate, pdfcode, filetype, create_time, ordernum, file_size, source_url, convert_url, preview_url FROM sc_ecdocument_attachment WHERE aid = '1146956059012038660'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.updateById
+Execute SQL：UPDATE sc_ecdocument_attachment SET ecdocumentid = '1146956731887452162', attachmentname = 'blank.pdf', attachmenttype = '0', attachmentstate = 'OK', filetype = 'PDF', create_time = '2019-07-05 09:39:28.989', ordernum = '1', source_url = '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956059012038658.PDF', convert_url = '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956059012038658.PDF' WHERE aid = '1146956059012038660'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectById
+Execute SQL：SELECT aid, ecdocumentid, attachmentname, attachmentcode, attachmenttype, attachmentstate, pdfcode, filetype, create_time, ordernum, file_size, source_url, convert_url, preview_url FROM sc_ecdocument_attachment WHERE aid = '1146956137617489921'
+
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.updateById
+Execute SQL：UPDATE sc_ecdocument_attachment SET ecdocumentid = '1146956731887452162', attachmentname = 'blank.pdf', attachmenttype = '0', attachmentstate = 'OK', filetype = 'PDF', create_time = '2019-07-05 09:39:29', ordernum = '2', source_url = '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956137613295617.PDF', convert_url = '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956137613295617.PDF' WHERE aid = '1146956137617489921'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectOne
+Execute SQL：SELECT aid, ecdocumentid, attachmentname, attachmentcode, attachmenttype, attachmentstate, pdfcode, filetype, create_time, ordernum, file_size, source_url, convert_url, preview_url FROM sc_ecdocument_attachment WHERE ecdocumentid = '1146956731887452162' AND attachmentstate = 'OK' AND attachmenttype = '1'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectList
+Execute SQL：SELECT aid, ecdocumentid, attachmentname, attachmentcode, attachmenttype, attachmentstate, pdfcode, filetype, create_time, ordernum, file_size, source_url, convert_url, preview_url FROM sc_ecdocument_attachment WHERE ecdocumentid = '1146956731887452162' AND attachmentstate = 'OK' AND attachmenttype = '0' ORDER BY ordernum ASC
+
+2019-07-05 09:39:29.017  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.InteractionLogInterceptor  40 : DocHandleController.mergePdfByUrls(..)[Begin]:1562290769017
+2019-07-05 09:39:29.030  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.interceptor.MonitorLogger    44 : DocHandleController.mergePdfByUrls(..)[End]:1562290769017^_^DocHandleController.mergePdfByUrls(..)=[{"outPutUrl":"/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956732105555969Convert.PDF","pdfUrls":["/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956059012038658.PDF","/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956137613295617.PDF"]}]^_^"JVBERi0xLjQKJfbk/N8KMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovVmVyc2lvbiAvMS40Ci9QYWdlcyAyIDAgUgo+PgplbmRvYmoKMyAwIG9iago8PAovVGl0bGUgPEZFRkYwMDREMDA2OTAwNjMwMDcyMDA2RjAwNzMwMDZGMDA2NjAwNzQwMDIwMDA1NzAwNkYwMDcyMDA2NDAwMjAwMDJEMDAyMDY1ODc2ODYzMDAzMT4KL1Byb2R1Y2VyIDxGRUZGMDA2RDAwNjEwMDYzMDA0RjAwNTMwMDIwNzI0ODY3MkMwMDIwMDAzMTAwMzAwMDJFMDAzMTAwMzQwMDJFMDAzNUZGMDg3MjQ4NTNGNzAwMjAwMDMxMDAzODAwNDYwMDMyMDAzMDAwMzNGRjA5MDAyMDAwNTEwMDc1MDA2MTAwNzIwMDc0MDA3QTAwMjAwMDUwMDA0NDAwNDYwMDQzMDA2RjAwNkUwMDc0MDA2NTAwNzgwMDc0PgovQ3JlYXRvciAoV29yZCkKL0NyZWF0aW9uRGF0ZSAoRDoyMDE5MDcwMzAyNTk0MVowMCcwMCcpCi9Nb2REYXRlIChEOjIwMTkwNzAzMDI1OTQxWjAwJzAwJykKL0tleXdvcmRzICgpCi9BQVBMIzNBS2V5d29yZHMgW10KPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFs0IDAgUiA1IDAgUl0KL0NvdW50IDIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDYgMCBSCi9Db250ZW50cyA3IDAgUgovTWVkaWFCb3ggWzAuMCAwLjAgNTk1LjAgODQyLjBdCi9Dcm9wQm94IFswLjAgMC4wIDU5NS4wIDg0Mi4wXQovUm90YXRlIDAKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDggMCBSCi9Db250ZW50cyA5IDAgUgovTWVkaWFCb3ggWzAuMCAwLjAgNTk1LjAgODQyLjBdCi9Dcm9wQm94IFswLjAgMC4wIDU5NS4wIDg0Mi4wXQovUm90YXRlIDAKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL1Byb2NT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...^_^13^_^true
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.usercenter.mapper.watermark.WatermarkSettingMapper.selectOne
+Execute SQL：SELECT id, owner_type, owner_id, watermark_flag, watermark_content, create_by, create_time, update_time, update_by, del_flag FROM uc_watermark_setting WHERE del_flag = '0' AND owner_type = 'PERSON' AND owner_id = '1146408901900779521'
+
+2019-07-05 09:39:29.043  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.InteractionLogInterceptor  40 : DocHandleController.createPdfWatermark(..)[Begin]:1562290769043
+2019-07-05 09:39:29.045  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.interceptor.MonitorLogger    44 : DocHandleController.createPdfWatermark(..)[End]:1562290769043^_^DocHandleController.createPdfWatermark(..)=[{"pdfByte":"JVBERi0xLjQKJfbk/N8KMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovVmVyc2lvbiAvMS40Ci9QYWdlcyAyIDAgUgo+PgplbmRvYmoKMyAwIG9iago8PAovVGl0bGUgPEZFRkYwMDREMDA2OTAwNjMwMDcyMDA2RjAwNzMwMDZGMDA2NjAwNzQwMDIwMDA1NzAwNkYwMDcyMDA2NDAwMjAwMDJEMDAyMDY1ODc2ODYzMDAzMT4KL1Byb2R1Y2VyIDxGRUZGMDA2RDAwNjEwMDYzMDA0RjAwNTMwMDIwNzI0ODY3MkMwMDIwMDAzMTAwMzAwMDJFMDAzMTAwMzQwMDJFMDAzNUZGMDg3MjQ4NTNGNzAwMjAwMDMxMDAzODAwNDYwMDMyMDAzMDAwMzNGRjA5MDAyMDAwNTEwMDc1MDA2MTAwNzIwMDc0MDA3QTAwMjAwMDUwMDA0NDAwNDYwMDQzMDA2RjAwNkUwMDc0MDA2NTAwNzgwMDc0PgovQ3JlYXRvciAoV29yZCkKL0NyZWF0aW9uRGF0ZSAoRDoyMDE5MDcwMzAyNTk0MVowMCcwMCcpCi9Nb2REYXRlIChEOjIwMTkwNzAzMDI1OTQxWjAwJzAwJykKL0tleXdvcmRzICgpCi9BQVBMIzNBS2V5d29yZHMgW10KPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFs0IDAgUiA1IDAgUl0KL0NvdW50IDIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDYgMCBSCi9Db250ZW50cyA3IDAgUgovTWVkaWFCb3ggWzAuMCAwLjAgNTk1LjAgODQyLjBdCi9Dcm9wQm94IFswLjAgMC4wIDU5NS4wIDg0Mi4wXQovUm90YXRlIDAKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDggMCBSCi9Db250ZW50cyA5IDAgUgovTWVkaWFCb3ggWzAuMCAwLjAgNTk1LjAgODQyLjBdCi9Dcm9wQm94IFswLjAgMC4wIDU5NS4wIDg0Mi4wXQovUm90YXRlIDAKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL1Byb2NT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...^_^"JVBERi0xLjQKJeLjz9MKNCAwIG9iago8PC9EZXNjZW50IC0xMjAvQ2FwSGVpZ2h0IDg4MC9TdGVtViA5My9UeXBlL0ZvbnREZXNjcmlwdG9yL0ZsYWdzIDYvU3R5bGU8PC9QYW5vc2UoAQUCAgQAAAAAAAAAKT4+L0ZvbnRCQm94IFstMjUgLTI1NCAxMDAwIDg4MF0vRm9udE5hbWUvU1RTb25nLUxpZ2h0L0l0YWxpY0FuZ2xlIDAvQXNjZW50IDg4MD4+CmVuZG9iago1IDAgb2JqCjw8L0RXIDEwMDAvU3VidHlwZS9DSURGb250VHlwZTAvQ0lEU3lzdGVtSW5mbzw8L1N1cHBsZW1lbnQgNC9SZWdpc3RyeShBZG9iZSkvT3JkZXJpbmcoR0IxKT4+L1R5cGUvRm9udC9CYXNlRm9udC9TVFNvbmctTGlnaHQvRm9udERlc2NyaXB0b3IgNCAwIFI+PgplbmRvYmoKMiAwIG9iago8PC9TdWJ0eXBlL1R5cGUwL1R5cGUvRm9udC9CYXNlRm9udC9TVFNvbmctTGlnaHQtVW5pR0ItVUNTMi1IL0VuY29kaW5nL1VuaUdCLVVDUzItSC9EZXNjZW5kYW50Rm9udHNbNSAwIFJdPj4KZW5kb2JqCjEgMCBvYmoKPDwvQk0vTXVsdGlwbHkvY2EgMT4+CmVuZG9iagozIDAgb2JqCjw8L0JNL011bHRpcGx5L2NhIDE+PgplbmRvYmoKNiAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvTGVuZ3RoIDEwPj5zdHJlYW0KeJwr5AIAAO4AfAplbmRzdHJlYW0KZW5kb2JqCjcgMCBvYmoKPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAxMjE+PnN0cmVhbQp4nFMI5CrkcgrhMjSxUDA0NdMzM1UISeEy0LM0szAzVkCni9K59CMyjRTSi0G0sYKZgUJIGlC1qbm5IVCRhaGZmbmCLowBFUc2OpdLw/9hkrdfWqlpdEBITFJITJrfxLji4A+aIVlcQCOAEEICVbqGcAVyAQAIpiUyCmVuZHN0cmVhbQplbmRvYmoKOCAwIG9iago8PC9GaWx0ZXIvRmxhdGVEZWNvZGUvTGVuZ3RoIDEwPj5zdHJlYW0KeJwr5AIAAO4AfAplbmRzdHJlYW0KZW5kb2JqCjkgMCBvYmoKPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAxMjE+PnN0cmVhbQp4nFMI5CrkcgrhMjSxUDA0NdMzM1UISeEy0LM0szAzVkCni9K59CMyDRTSi0G0oYKZgUJIGlC1qbm5IVCRhaGZmbmCLowBFUc2OpdLw/9hkrdfWqlpdEBITFJITJrfxLji4A+aIVlcQCOAEEICVbqGcAVyAQAHBiUuCmVuZHN0cmVhbQplbmRvYmoKMTAgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1ZlcnNpb24vMS40L1BhZ2VzIDExIDAgUj4+CmVuZG9iagoxMSAwIG9iago8PC9LaWRzWzEyIDAgUiAxMyAwIFJdL1R5cGUvUGFnZXMvQ291bnQgMi9JVFhUKDIuMS43KT4+CmVuZG9iagoxMiAwIG9iago8PC9Db250ZW50c1s4IDAgUiAxNCAwIFIgOSAwIFJdL1R5cGUvUGFnZS9SZXNvdXJjZXM8PC9Db2xvclNwYWNlPDwvQ3MxWy9JQ0NCYXNlZCAxNSAwIFJdPj4vUHJvY1NldCBbL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSV0vRm9udDw8L0cxIDE2IDAgUi9YaTEgMiAwIFI+Pi9FeHRHU3RhdGU8PC9YaTAgMSAwIFI+Pj4+L1BhcmVudCAxMSAwIFIvQ3JvcEJveFswLjAgMC4wIDU5NS4wIDg0Mi4wXS9Sb3RhdGUgMC9NZWRpYUJveFswLjAgMC4wIDU5NS4wIDg0Mi4wXT4+CmVuZG9iagoxMyAwIG9iago8PC9Db250ZW50c1s2IDAgUiAxNyAwIFIgNyAwIFJdL1R5cGUvUGFnZS9SZXNvdXJjZXM8PC9Db2xvclNwYWNlPDwvQ3MxWy9JQ0NCYXNlZCAxOCAwIFJdPj4vUHJvY1NldCBbL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSV0vRm9udDw8L0cxIDE5IDAgUi9YaTMgMiAwIFI+Pi9FeHRHU3RhdGU8PC9YaTIgMyAwIFI+Pj4+L1BhcmVudCAxMSAwIFIvQ3JvcEJveFswLjAgMC4wIDU5NS4wIDg0Mi4wXS9Sb3RhdGUgMC9NZWRpYUJveFswLjAgMC4wIDU5NS4wIDg0Mi4wXT4+CmVuZG9iagoyMCAwIG9iago8PC9Db2xvclNwYWNlIDIxIDAgUi9Qcm9jU2V0Wy9QREYvVGV4dF0vRm9udCAyMiAwIFI+PgplbmRvYmoKMTQgMCBvYmoKPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAxNjI+PnN0cmVhbQp4AaVQuwrDMAzc8xX3A3VkSbYbCBlaSqFbwFvpEkOGQoaQ/4e4ydS0UEIRQqcHp5NGtBhRnieLNIEWm1IukWFd8xewCs9sKkYacIrQtZeD2GCISOD8sYgDyquFRexR+76TBvGJS1yW7Gck+YfxQFmYC4jpm1yVd7l31FqFSl1ILBSyd8SSGuQq6h+w+Bx4IN72Xu7VGctOsBW3+WU7A1lLXLAKZW5kc3RyZWFtCmVuZG9iagoyMyAwIG9iago8PC9Db2xvclNwYWNlIDI0IDAgUi9Qcm9jU2V0Wy9QREYvVGV4dF0vRm9udCAyNSAwIFI+PgplbmRvYmoKMTcgMCBvYmoKPDwvRmlsdGVyL0ZsYXRlRGVjb2RlL0xlbmd0aCAxNjI+PnN0cmVhbQp4AaVQuwrDMAzc8xX3A3VkSbYbCBlaSqFbwFvpEkOGQoaQ/4e4ydS0UEIRQqcHp5NGtBhRnieLNIEWm1IukWFd8xewCs9sKkYacIrQtZeD2GCISOD8sYgDyquFRexR+76TBvGJS1yW7Gck+YfxQFmYC4jpm1yVd7l31FqFSl1ILBSyd8SSGuQq6h+w+Bx4IN72Xu7VGctOsBW3+WU7A1lLXLAKZW5kc3RyZWFtCmVuZG9iagoyMSAwIG9iago8PC9DczFbL0lDQ0Jhc2VkIDE1IDAgUl0+PgplbmRvYmoKMjIgMCBvYmoKPDwvRzEgMTYgMCBSPj4KZW5kb2JqCjI0IDAgb2JqCjw8L0NzMVsvSUNDQmFzZWQgMTggMCBSXT4+CmVuZG9iagoyNSAwIG9iago8PC9HMSAxOSAwIFI+PgplbmRvYmoKMTUgMCBvYmoKPDwvQWx0ZXJuYXRlL0RldmljZVJHQi9GaWx0ZXIvRmxhdGVEZWNvZGUvTGVuZ3RoIDI2MTIvTiAzPj5zdHJlYW0KeAGdlndUU9kWh8+9N73QEiIgJfQaegkg0jtIFQRRiUmAUAKGhCZ2RAVGFBEpVmRUwAFHhyJjRRQLg4Ji1wnyEFDGwVFEReXdjGsJ7601896a/cdZ39nnt9fZZ+9917oAUPyCBMJ0WAGANKFYFO7rwVwSE8vE9wIYEAEOWAHA4WZmBEf4RALU/L09mZmoSMaz9u4ugGS72yy/UCZz1v9/kSI3QyQGAApF1TY8fiYX5QKUU7PFGTL/BMr0lSkyhjEyFqEJoqwi48SvbPan5iu7yZiXJuShGlnOGbw0noy7UN6aJeGjjAShXJgl4GejfAdlvVRJmgDl9yjT0/icTAAwFJlfzOcmoWyJMkUUGe6J8gIACJTEObxyDov5OWieAHimZ+SKBIlJYqYR15hp5ejIZvrxs1P5YjErlMNN4Yh4TM/0tAyOMBeAr2+WRQElWW2ZaJHtrRzt7VnW5mj5v9nfHn5T/T3IevtV8Sbsz55BjJ5Z32zsrC+9FgD2JFqbHbO+lVUAtG0GQOXhrE/vIADyBQC03pzzHoZsXpLE4gwnC4vs7GxzAZ9rLivoN/ufgm/Kv4Y595nL7vtWO6YXP4EjSRUzZUXlpqemS0TMzAwOl89k/fcQ/+PAOWnNycMsnJ/AF/GF6FVR6JQJhIlou4U8gViQLmQKhH/V4X8YNicHGX6daxRodV8AfYU5ULhJB8hvPQBDIwMkbj96An3rWxAxCsi+vGitka9zjzJ6/uf6Hwtcim7hTEEiU+b2DI9kciWiLBmj34RswQISkAd0oAo0gS4wAixgDRyAM3AD3iAAhIBIEAOWAy5IAmlABLJBPtgACkEx2AF2g2pwANSBetAEToI2cAZcBFfADXALDIBHQAqGwUswAd6BaQiC8BAVokGqkBakD5lC1hAbWgh5Q0FQOBQDxUOJkBCSQPnQJqgYKoOqoUNQPfQjdBq6CF2D+qAH0CA0Bv0BfYQRmALTYQ3YALaA2bA7HAhHwsvgRHgVnAcXwNvhSrgWPg63whfhG/AALIVfwpMIQMgIA9FGWAgb8URCkFgkAREha5EipAKpRZqQDqQbuY1IkXHkAwaHoWGYGBbGGeOHWYzhYlZh1mJKMNWYY5hWTBfmNmYQM4H5gqVi1bGmWCesP3YJNhGbjS3EVmCPYFuwl7ED2GHsOxwOx8AZ4hxwfrgYXDJuNa4Etw/XjLuA68MN4SbxeLwq3hTvgg/Bc/BifCG+Cn8cfx7fjx/GvyeQCVoEa4IPIZYgJGwkVBAaCOcI/YQRwjRRgahPdCKGEHnEXGIpsY7YQbxJHCZOkxRJhiQXUiQpmbSBVElqIl0mPSa9IZPJOmRHchhZQF5PriSfIF8lD5I/UJQoJhRPShxFQtlOOUq5QHlAeUOlUg2obtRYqpi6nVpPvUR9Sn0vR5Mzl/OX48mtk6uRa5Xrl3slT5TXl3eXXy6fJ18hf0r+pvy4AlHBQMFTgaOwVqFG4bTCPYVJRZqilWK...^_^2^_^true
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument_attachment (aid, ecdocumentid, attachmentname, attachmenttype, attachmentstate, source_url, convert_url) VALUES ('1146956732227190785', '1146956731887452162', '黄进兵测试空白合同', '1', 'OK', '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956732105555969Convert.PDF', '/home/betaoper/nas/ecdoucment/default/2019-07-05/1146956732105555969Convert.PDF')
+
+2019-07-05 09:39:29.058  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/document执行完毕
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146956732281716738', '0', '保存合同', 'econtract', '18511779931', '2019-07-05 09:39:29.058', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/sign/document', 'POST', '__v=%5Bv1%5D&__trace_id=%5B127.0.0.1-1562290768.94-8397-3428%5D&_realip=%5B60.247.93.190%5D', 110)
+
+2019-07-05 09:39:29.245  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:D2E02B912BAE062EA9994EFFEBE96A71 ,__trace_id :127.0.0.1-1562290769.24-8397-3428
+2019-07-05 09:39:29.246  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/signatory/getSignatoryWatermark开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectList
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id IN ('1146408901900779521')
+
+2019-07-05 09:39:29.256  INFO 5707 --- [io-10616-exec-3] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/signatory/getSignatoryWatermark执行完毕
+2019-07-05 09:39:29.282  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:EB341B28E0D3FF467912235FFF6BF2A8 ,__trace_id :127.0.0.1-1562290769.276-8397-3450
+2019-07-05 09:39:29.283  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/document/edit/1146956731887452162开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectAttament
+Execute SQL：SELECT a.aid, a.ecdocumentid, a.attachmentcode, a.attachmentname, a.pdfcode, a.attachmentstate, a.ordernum, a.file_size FROM sc_ecdocument_attachment a WHERE a.ecdocumentid = 1146956731887452162 AND a.attachmenttype = '0' ORDER BY ordernum ASC
+
+ Time：7 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.editDocumentById
+Execute SQL：SELECT t.did, t.ecnum, t.dname, t.ecvalidity, t.watermark, t.processtype, t.senderid, t.sendername, t.totalsign, t.currentsign, t.status, t.sendtime, t.orgid, t.sendtype, t.note, update_by, t.create_time, t.signatorys, t.template_id, isposition FROM sc_ecdocument t WHERE 1 = 1 AND t.did = '1146956731887452162'
+
+2019-07-05 09:39:29.306  INFO 5707 --- [io-10616-exec-2] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/document/edit/1146956731887452162执行完毕
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146956733317709826', '0', '编辑合同', 'econtract', '18511779931', '2019-07-05 09:39:29.305', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/sign/document/edit/1146956731887452162', 'GET', 'time=%5B1562290769099%5D&__trace_id=%5B127.0.0.1-1562290769.276-8397-3450%5D&_realip=%5B60.247.93.190%5D&__v=%5Bv2%5D', 22)
+
+2019-07-05 09:39:29.348  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:4A63DB6D840107A42478F34E58616EA7 ,__trace_id :127.0.0.1-1562290769.342-8397-3428
+2019-07-05 09:39:29.348  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/signature/detail/1146956731887452162开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatureMapper.getSignatureByDidAndSid
+Execute SQL：SELECT st.stid, st.ecdocumentid, st.signpartycode, st.pagenum, st.fieldx, st.fieldy, st.sealtype, st.status, st.sealid FROM sc_ecdocument_signature st WHERE st.ecdocumentid = '1146956731887452162'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatoryMapper.getSignListByDid
+Execute SQL：SELECT s.syid, s.ecdocumentid, s.signnum, s.signusername, s.certificatesnum, s.signtype, s.operator, s.operatorphone, s.orgname, s.orgid, s.signatorytype, s.signstate FROM sc_ecdocument_signatory s WHERE 1 = 1 AND s.ecdocumentid = '1146956731887452162' AND s.signtype = '0' ORDER BY signnum ASC
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectById
+Execute SQL：SELECT did, dname AS docName, ecnum, ecvalidity, orgid, status, create_time, processtype, senderid, sendername, del_flag, totalsign, currentsign, create_by, update_time, sendtime, sendtype, update_by, revoke_reason, note, signatorys, template_id, isposition, watermark FROM sc_ecdocument WHERE did = '1146956731887452162'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectOne
+Execute SQL：SELECT aid, ecdocumentid, attachmentname, attachmentcode, attachmenttype, attachmentstate, pdfcode, filetype, create_time, ordernum, file_size, source_url, convert_url, preview_url FROM sc_ecdocument_attachment WHERE ecdocumentid = '1146956731887452162' AND attachmentstate = 'OK' AND attachmenttype = '1'
+
+2019-07-05 09:39:29.367  INFO 5707 --- [io-10616-exec-6] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/signature/detail/1146956731887452162执行完毕
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146956733573562370', '0', '获取合同预设签署位置', 'econtract', '18511779931', '2019-07-05 09:39:29.367', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/sign/signature/detail/1146956731887452162', 'GET', 'time=%5B1562290769203%5D&__trace_id=%5B127.0.0.1-1562290769.342-8397-3428%5D&_realip=%5B60.247.93.190%5D&__v=%5Bv2%5D', 18)
+
+2019-07-05 09:39:34.148  INFO 5707 --- [io-10616-exec-8] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:7191B949C2D4AD8F69D7F7518C30F1F8 ,__trace_id :127.0.0.1-1562290774.141-8397-3454
+2019-07-05 09:39:34.152  INFO 5707 --- [io-10616-exec-8] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/documentatta/down/1146956732227190785开始执行
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectById
+Execute SQL：SELECT aid, ecdocumentid, attachmentname, attachmentcode, attachmenttype, attachmentstate, pdfcode, filetype, create_time, ordernum, file_size, source_url, convert_url, preview_url FROM sc_ecdocument_attachment WHERE aid = '1146956732227190785'
+
+2019-07-05 09:39:34.159  INFO 5707 --- [io-10616-exec-8] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/documentatta/down/1146956732227190785执行完毕
+
+
+
+确定：
+
+2019-07-05 09:40:30.819  INFO 5707 --- [io-10616-exec-9] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:055156DDA569AE169183D901CA778298 ,__trace_id :127.0.0.1-1562290830.798-8397-3428
+2019-07-05 09:40:30.820  INFO 5707 --- [io-10616-exec-9] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/document/send开始执行
+ Time：5 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatoryMapper.getSignListByDid
+Execute SQL：SELECT s.syid, s.ecdocumentid, s.signnum, s.signusername, s.certificatesnum, s.signtype, s.operator, s.operatorphone, s.orgname, s.orgid, s.signatorytype, s.signstate FROM sc_ecdocument_signatory s WHERE 1 = 1 AND s.ecdocumentid = '1146956731887452162' AND s.signtype = '0' ORDER BY signnum ASC
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectById
+Execute SQL：SELECT did, dname AS docName, ecnum, ecvalidity, orgid, status, create_time, processtype, senderid, sendername, del_flag, totalsign, currentsign, create_by, update_time, sendtime, sendtype, update_by, revoke_reason, note, signatorys, template_id, isposition, watermark FROM sc_ecdocument WHERE did = '1146956731887452162'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectById
+Execute SQL：SELECT did, dname AS docName, ecnum, ecvalidity, orgid, status, create_time, processtype, senderid, sendername, del_flag, totalsign, currentsign, create_by, update_time, sendtime, sendtype, update_by, revoke_reason, note, signatorys, template_id, isposition, watermark FROM sc_ecdocument WHERE did = '1146956731887452162'
+
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.updateById
+Execute SQL：UPDATE sc_ecdocument SET dname = '黄进兵测试空白合同', ecnum = 'GF201907054374592451', ecvalidity = '2019-07-20', orgid = '1146408901900779521', status = '1', create_time = '2019-07-05 09:39:29', processtype = '1', senderid = '1146408901900779521', sendername = '孟然', del_flag = '0', totalsign = 1, currentsign = 0, create_by = '18511779931', update_time = '2019-07-05 09:40:30.85', sendtime = '2019-07-05 09:40:30.85', sendtype = '0', update_by = '18511779931', note = '', signatorys = '[{"currentSign":0,"orgName":"孟然","dNumSignName":"黄进兵测试空白合同孟然","operatorPhone":"","signState":"2","operator":"","orgId":"1146408901900779521","signatoryType":"0","signNum":"1","ecDocumentId":"1146956731887452162","certificatesNum":"220105198311232015","syId":"1146956731916812290","totalSign":1,"signType":"0","processType":"1"}]', template_id = '0', isposition = '1', watermark = '1' WHERE did = '1146956731887452162'
+
+ Time：4 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatureMapper.delete
+Execute SQL：DELETE FROM sc_ecdocument_signature WHERE ecdocumentid = '1146956731887452162'
+
+ Time：0 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatureMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument_signature (stid, ecdocumentid, signpartycode, pagenum, fieldx, fieldy, sealtype, status) VALUES ('1146956991519064066', '1146956731887452162', '1146956731916812290', 1, 0.33480453, 0.68939394, '1', '0')
+
+ Time：0 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatureMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument_signature (stid, ecdocumentid, signpartycode, pagenum, fieldx, fieldy, sealtype, status) VALUES ('1146956991527452673', '1146956731887452162', '1146956731916812290', 1, 0.33102143, 0.49910873, '3', '0')
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList
+Execute SQL：SELECT id, user_id, auth_status, auth_num, name, id_num, idcard_front, idcard_back, mobile, email, contact_address, auth_type, auth_declare, create_by, create_time, update_time, update_by, del_flag FROM uc_personauth WHERE del_flag = '0' AND user_id = '1146408901900779521' AND auth_status = 'BEINGAUTHORIZED'
+
+ Time：3 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById
+Execute SQL：SELECT id, account_type, uid, head_img_url, password, status, create_by, create_time, update_time, update_by, del_flag FROM uc_user WHERE id = '1146408901900779521' AND del_flag = '0'
+
+2019-07-05 09:40:30.910  INFO 5707 --- [ taskExecutor-3] c.o.b.e.s.s.i.d.EcdocumentLogServiceImpl 58 : 当前时间非完成:2019-07-05T09:40:30.910
+ Time：0 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatoryMapper.getSignListByDid
+Execute SQL：SELECT s.syid, s.ecdocumentid, s.signnum, s.signusername, s.certificatesnum, s.signtype, s.operator, s.operatorphone, s.orgname, s.orgid, s.signatorytype, s.signstate FROM sc_ecdocument_signatory s WHERE 1 = 1 AND s.ecdocumentid = '1146956731887452162' ORDER BY signnum ASC
+
+ Time：3 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentSignatoryMapper.getSignListByDid
+Execute SQL：SELECT s.syid, s.ecdocumentid, s.signnum, s.signusername, s.certificatesnum, s.signtype, s.operator, s.operatorphone, s.orgname, s.orgid, s.signatorytype, s.signstate FROM sc_ecdocument_signatory s WHERE 1 = 1 AND s.ecdocumentid = '1146956731887452162' ORDER BY signnum ASC
+
+ Time：5 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentLogMapper.insert
+Execute SQL：INSERT INTO sc_ecdocument_log (lid, create_by, createtype, ecdocumentid, orgid, create_time, orgname, note, order_time) VALUES ('1146956991703613441', '18511779931', '发起', '1146956731887452162', '1146408901900779521', '2019-07-05 09:40:30.91', '孟然', '', '2019-07-05 09:40:30.91')
+
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectById
+Execute SQL：SELECT did, dname AS docName, ecnum, ecvalidity, orgid, status, create_time, processtype, senderid, sendername, del_flag, totalsign, currentsign, create_by, update_time, sendtime, sendtype, update_by, revoke_reason, note, signatorys, template_id, isposition, watermark FROM sc_ecdocument WHERE did = '1146956731887452162'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.ContactSyncSettingMapper.selectOne
+Execute SQL：SELECT id, user_id, enterprise_id, sync_flag, create_by, create_time, update_time, update_by, del_flag FROM uc_contact_sync_setting WHERE del_flag = '0' AND user_id = '1146408901900779521' AND enterprise_id = '1'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectList
+Execute SQL：SELECT id, user_id, email, contact_address, name, id_num, mobile, auth_type, create_by, create_time, update_time, update_by, del_flag, is_reauth FROM uc_person WHERE del_flag = '0' AND user_id IN ('1146408901900779521')
+
+ Time：2 ms - ID：cn.org.bjca.econtract.usercenter.mapper.person.ContactMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM uc_contact WHERE del_flag = '0' AND user_id = '1146408901900779521' AND enterprise_id = '1' AND contact_type = 'PERSON' AND contact_id = '1146408901900779521'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.template.MsgTemplateMapper.selectOne
+Execute SQL：SELECT id, type, name, code, subject, content, create_by, create_time, update_time, update_by, del_flag FROM msg_template WHERE del_flag = '0' AND code = '52' AND type = 'EMAIL'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.template.MsgTemplateMapper.selectOne
+Execute SQL：SELECT id, type, name, code, subject, content, create_by, create_time, update_time, update_by, del_flag FROM msg_template WHERE del_flag = '0' AND code = '52' AND type = 'NOTICE'
+
+2019-07-05 09:40:30.949  INFO 5707 --- [io-10616-exec-9] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/document/send执行完毕
+2019-07-05 09:40:30.950  INFO 5707 --- [ taskExecutor-1] c.o.b.e.common.core.util.RestUtils       97 : url:http://192.168.108.11:8081/msgcenter/v1/notify/bizMsg
+2019-07-05 09:40:30.950  INFO 5707 --- [ taskExecutor-1] c.o.b.e.common.core.util.RestUtils       98 : entity:<{mobile=18511779931, thirdTraceId=855d7c9d1cc847068b5f70ae25f24ed2, traceId=855d7c9d1cc847068b5f70ae25f24ed2, templateId=52, param={"system":"信手书电子合同云平台","contract":"黄进兵测试空白合同(编号:GF201907054374592451)","company":"孟然","time":"2019-07-20","user":"孟然"}, extension=null, appId=APP_1CAA1FD8621A4411BCD712A2421BEF37, version=1.0, deviceId=DEV_198452142B434DDE8273DAFDE7AD6F07, signAlgo=HmacSHA256},{Content-Type=[application/json], develop-id=[PF_100000011], develop-key=[c378b5a4cb2c46148ca70b6888ea457e], __trace_id=[null]}>
+2019-07-05 09:40:30.950  INFO 5707 --- [ taskExecutor-6] c.o.b.e.m.client.MessageRemoteClient     30 : 调用 saveDefaultManagerRole
+2019-07-05 09:40:30.951  INFO 5707 --- [ taskExecutor-6] c.o.b.e.common.core.util.RestUtils       97 : url:http://192.168.108.11:8081/msgcenter/v1/notify/toMail
+2019-07-05 09:40:30.951  INFO 5707 --- [ taskExecutor-6] c.o.b.e.common.core.util.RestUtils       98 : entity:<{signAlgo=HmacSHA256, subject=SaaS收到合同, appId=APP_1CAA1FD8621A4411BCD712A2421BEF37, fromName=信手书电子合同云平台, plainText=孟然，您收到了孟然发起的《黄进兵测试空白合同(编号:GF201907054374592451)》，需在2019-07-20前完成签署。请登录信手书电子合同云平台查看。, from=null, to=5999109@qq.com, version=1.0, deviceId=DEV_198452142B434DDE8273DAFDE7AD6F07, htmlText=null},{Content-Type=[application/json], develop-id=[PF_100000011], develop-key=[c378b5a4cb2c46148ca70b6888ea457e], __trace_id=[null]}>
+ Time：0 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.insert
+Execute SQL：INSERT INTO msg_notice (id, enterprise_id, user_id, biz, biz_id, type, subject, content, read_flag, create_by, create_time, update_by, del_flag) VALUES ('1146956991879774210', '1', '1146408901900779521', 'DOC_START', '1146956731887452162', 'DOCUMENT', 'SaaS收到合同', '孟然，您收到了孟然发起的《黄进兵测试空白合同(编号:GF201907054374592451)》，需在2019-07-20前完成签署。请登录信手书电子合同云平台查看。', '0', '1', '2019-07-05 09:40:30.952', '1', '0')
+
+ Time：4 ms - ID：cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146956991867191297', '0', '发送合同预设签署位置', 'econtract', '18511779931', '2019-07-05 09:40:30.949', '192.168.108.11', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/sign/document/send', 'POST', '__v=%5Bv1%5D&__trace_id=%5B127.0.0.1-1562290830.798-8397-3428%5D&_realip=%5B60.247.93.190%5D', 128)
+
+2019-07-05 09:40:31.346  INFO 5707 --- [io-10616-exec-5] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:032DA585408CB64D93CD04092E597714 ,__trace_id :127.0.0.1-1562290831.323-8397-3428
+2019-07-05 09:40:31.346  INFO 5707 --- [io-10616-exec-5] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/applyjoinent/getUserJoinAllEntInfo开始执行
+ Time：3 ms - ID：cn.org.bjca.econtract.usercenter.mapper.enterprise.EmpEntRelationMapper.getUserJoinAllENtInfo
+Execute SQL：SELECT DISTINCT e.id, e.`name` FROM uc_empent_relation er JOIN uc_enterprise e ON e.id = er.ent_id AND e.del_flag = '0' AND er.emp_status = 'ENABLE' AND er.del_flag = '0' WHERE er.user_id = '1146408901900779521'
+
+2019-07-05 09:40:31.353  INFO 5707 --- [io-10616-exec-5] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/applyjoinent/getUserJoinAllEntInfo执行完毕
+2019-07-05 09:40:31.363  INFO 5707 --- [io-10616-exec-7] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:0648B979BAB26D2B9387AA253F07256E ,__trace_id :127.0.0.1-1562290831.341-8397-3461
+2019-07-05 09:40:31.363  INFO 5707 --- [io-10616-exec-7] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/notice/page开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectPage
+Execute SQL：SELECT id, enterprise_id, user_id, biz, biz_id, type, subject, content, serial_no, read_flag, create_by, create_time, update_time, update_by, del_flag FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' ORDER BY create_time DESC LIMIT 0,10
+
+2019-07-05 09:40:31.373  INFO 5707 --- [io-10616-exec-7] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/notice/page执行完毕
+2019-07-05 09:40:31.380  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:B76368D044AC5D7B4D8617C8C7380DE7 ,__trace_id :127.0.0.1-1562290831.358-8397-3462
+2019-07-05 09:40:31.380  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/document/sendlist开始执行
+2019-07-05 09:40:31.387  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:34C07688793DF5C43A10378C5920E503 ,__trace_id :127.0.0.1-1562290831.365-8397-3463
+2019-07-05 09:40:31.388  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/notice/new/count开始执行
+ Time：2 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentAndSingByCond
+Execute SQL：SELECT t.did, t.ecnum, t.dname, t.ecvalidity, t.watermark, t.processtype, t.senderid, t.sendername, t.totalsign, t.currentsign, t.status, t.sendtime, t.orgid, t.sendtype, t.note, update_by, t.create_time, t.signatorys, t.template_id, isposition FROM sc_ecdocument t WHERE 1 = 1 AND t.orgid = '1146408901900779521' ORDER BY sendtime DESC LIMIT 0,5
+
+2019-07-05 09:40:31.389  INFO 5707 --- [io-10616-exec-4] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/document/sendlist执行完毕
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' AND type = 'DOCUMENT'
+
+ Time：2 ms - ID：cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount
+Execute SQL：SELECT COUNT(1) FROM msg_notice WHERE del_flag = '0' AND (user_id = '1146408901900779521' AND enterprise_id = 1) AND read_flag = '0' AND type = 'NORMAL'
+
+2019-07-05 09:40:31.402  INFO 5707 --- [o-10616-exec-10] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/notice/new/count执行完毕
+2019-07-05 09:40:32.370  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         37 : sessionId:72AD6E18030C2D4D08D7220AB0BF9876 ,__trace_id :127.0.0.1-1562290832.348-8397-3463
+2019-07-05 09:40:32.371  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         38 : 请求:http://192.168.109.3:10616/sign/document/getStatusCount开始执行
+ Time：3 ms - ID：cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentStatusCount
+Execute SQL：SELECT count(*) AS num, 'draft' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.orgid = '1146408901900779521' AND t.status = '0' UNION ALL SELECT count(*) AS num, 'sign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE ss.orgid = '1146408901900779521' AND ss.signstate = '2' AND ss.signtype = '0') AND t.status = '1' UNION ALL SELECT count(*) AS num, 'othersign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE ss.orgid = '1146408901900779521' AND ((ss.signstate = '2' AND (totalsign - currentsign) != 1 AND ss.processtype != '1') OR (ss.signstate != '2' AND (totalsign - currentsign) != 0))) AND t.status = '1' UNION ALL SELECT count(*) AS num, 'complete' AS business FROM sc_ecdocument t WHERE t.status = '5' AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE ss.orgid = '1146408901900779521')
+
+2019-07-05 09:40:32.379  INFO 5707 --- [io-10616-exec-1] c.o.b.e.c.c.i.TraceIdInterceptor         45 : 请求:http://192.168.109.3:10616/sign/document/getStatusCount执行完毕
+
