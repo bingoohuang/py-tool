@@ -1,0 +1,60 @@
+[betaoper@beta-hetong pumptool]$ ./topsql.py ec.log
+单次执行时间排行榜 Single top10:
+# 1  Cost: 91 ms ID: cn.org.bjca.econtract.signcenter.mapper.documenttemplate.EcdocumentTemplateAttachmentMapper.updateById
+Execute SQL：UPDATE sc_ecdocument_template_attachment SET template_id = '1146610251498536962', attachment_name = 'TT.PDF', attachment_type = '0', attachment_state = 'OK', create_time = '2019-07-04 12:57:09.775', create_by = '1146591400148877314', update_time = '2019-07-04 10:42:36', update_by = '张永兰', file_type = 'PDF', order_num = '1', source_url = '/home/betaoper/nas/documenttemplate/default/2019-07-04/1146610229784625153.PDF', convert_url = '/home/betaoper/nas/documenttemplate/default/2019-07-04/1146610229784625153.PDF', file_size = '45913' WHERE aid = '1146610229793013761'
+# 2  Cost: 90 ms ID: cn.org.bjca.econtract.signcenter.mapper.documenttemplate.EcdocumentTemplateAttachmentMapper.updateById
+Execute SQL：UPDATE sc_ecdocument_template_attachment SET template_id = '1146610251498536962', attachment_name = '有问题的文件.pdf', attachment_type = '0', attachment_state = 'OK', create_time = '2019-07-04 12:57:09.875', create_by = '1146591400148877314', update_time = '2019-07-04 12:57:01', update_by = '张永兰', file_type = 'PDF', order_num = '2', source_url = '/home/betaoper/nas/documenttemplate/default/2019-07-04/1146644055512625153.PDF', convert_url = '/home/betaoper/nas/documenttemplate/default/2019-07-04/1146644055512625153.PDF', file_size = '75' WHERE aid = '1146644055516819457'
+# 3  Cost: 66 ms ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentStatusCount
+Execute SQL：SELECT count(*) AS num, 'draft' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.orgid = '1146408901900779521' AND t.status = '0' UNION ALL SELECT count(*) AS num, 'sign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521' AND ss.signstate = '2' AND ss.signtype = '0') AND t.status = '1' UNION ALL SELECT count(*) AS num, 'othersign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521' AND ((ss.signstate = '2' AND (totalsign - currentsign) != 1 AND ss.processtype != '1') OR (ss.signstate != '2' AND (totalsign - currentsign) != 0))) AND t.status = '1' UNION ALL SELECT count(*) AS num, 'complete' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.status = '5' AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521')
+# 4  Cost: 64 ms ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentStatusCount
+Execute SQL：SELECT count(*) AS num, 'draft' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.orgid = '1146408901900779521' AND t.status = '0' UNION ALL SELECT count(*) AS num, 'sign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521' AND ss.signstate = '2' AND ss.signtype = '0') AND t.status = '1' UNION ALL SELECT count(*) AS num, 'othersign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521' AND ((ss.signstate = '2' AND (totalsign - currentsign) != 1 AND ss.processtype != '1') OR (ss.signstate != '2' AND (totalsign - currentsign) != 0))) AND t.status = '1' UNION ALL SELECT count(*) AS num, 'complete' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.status = '5' AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521')
+# 5  Cost: 51 ms ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectOne
+Execute SQL：SELECT aid, ecdocumentid, attachmentname, attachmentcode, attachmenttype, attachmentstate, pdfcode, filetype, create_time, ordernum, file_size, source_url, convert_url, preview_url FROM sc_ecdocument_attachment WHERE ecdocumentid = '1146623988573974530' AND attachmenttype = '1'
+# 6  Cost: 47 ms ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentStatusCount
+Execute SQL：SELECT count(*) AS num, 'draft' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.orgid = '1146408901900779521' AND t.status = '0' UNION ALL SELECT count(*) AS num, 'sign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521' AND ss.signstate = '2' AND ss.signtype = '0') AND t.status = '1' UNION ALL SELECT count(*) AS num, 'othersign' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521' AND ((ss.signstate = '2' AND (totalsign - currentsign) != 1 AND ss.processtype != '1') OR (ss.signstate != '2' AND (totalsign - currentsign) != 0))) AND t.status = '1' UNION ALL SELECT count(*) AS num, 'complete' AS business FROM sc_ecdocument t WHERE 1 = 1 AND t.status = '5' AND t.did IN (SELECT ss.ecdocumentid FROM sc_ecdocument_signatory ss WHERE 1 = 1 AND ss.orgid = '1146408901900779521')
+# 7  Cost: 45 ms ID: cn.org.bjca.econtract.usercenter.mapper.enterprise.EnterpriseMapper.selectById
+Execute SQL：SELECT id, user_id, name, phone, post_code, contact_address, legal_name, legal_id_card, logo, legalid_front_image_url, legalid_back_image_url, legal_card_period, apply_document, apply_declare, auth_status, enterprise_status, create_by, create_time, update_time, update_by, del_flag, is_reauth, notification_contacts_mobile, notification_contacts_email FROM uc_enterprise WHERE id = '1146607259181400065' AND del_flag = '0'
+# 8  Cost: 44 ms ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectById
+Execute SQL：SELECT did, dname AS docName, ecnum, ecvalidity, orgid, status, create_time, processtype, senderid, sendername, del_flag, totalsign, currentsign, create_by, update_time, sendtime, sendtype, update_by, revoke_reason, note, signatorys, template_id, isposition, watermark FROM sc_ecdocument WHERE did = '1146623988573974530'
+# 9  Cost: 42 ms ID: cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146627853427978242', '0', '合同预览下载', 'econtract', '16619761718', '2019-07-04 11:52:38.23', '192.168.108.11', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/sign/signatory/preview/1146623988573974530', 'GET', '__v=%5Bv2%5D&__trace_id=%5B127.0.0.1-1562212358.212-8398-1483%5D&_realip=%5B60.247.93.190%5D&sendleTime=%5B1562212357860%5D', 10)
+# 10  Cost: 41 ms ID: cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert
+Execute SQL：INSERT INTO sys_log (id, type, title, service_id, create_by, create_time, remote_addr, user_agent, request_uri, method, params, time) VALUES ('1146626096878628865', '0', '合同预览下载', 'econtract', '16619761718', '2019-07-04 11:45:39.436', '192.168.108.11', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36', '/sign/signatory/preview/1146623988573974530', 'GET', '__v=%5Bv2%5D&__trace_id=%5B127.0.0.1-1562211939.413-8399-1312%5D&_realip=%5B60.247.93.190%5D&sendleTime=%5B1562211938988%5D', 10)
+
+累积执行时间排行榜 Accumulative top10:
+# 1 Accum Cost: 5417 ms, ID: cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert times: 1172
+# 2 Accum Cost: 4927 ms, ID: cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount times: 2175
+# 3 Accum Cost: 2084 ms, ID: cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne times: 851
+# 4 Accum Cost: 1800 ms, ID: cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList times: 750
+# 5 Accum Cost: 1572 ms, ID: cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById times: 685
+# 6 Accum Cost: 1537 ms, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentAndSingByCond times: 582
+# 7 Accum Cost: 1454 ms, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentStatusCount times: 402
+# 8 Accum Cost: 982 ms, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.editDocumentById times: 134
+# 9 Accum Cost: 814 ms, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectOne times: 304
+# 10 Accum Cost: 750 ms, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectById times: 278
+
+执行总次数排行榜 Exec Times top10:
+# 1 Accum Times: 2175 times, ID: cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.selectCount Accum Cost: 4927
+# 2 Accum Times: 1172 times, ID: cn.org.bjca.econtract.admin.mapper.log.SysLogMapper.insert Accum Cost: 5417
+# 3 Accum Times: 851 times, ID: cn.org.bjca.econtract.usercenter.mapper.person.PersonMapper.selectOne Accum Cost: 2084
+# 4 Accum Times: 750 times, ID: cn.org.bjca.econtract.usercenter.mapper.auth.PersonalAuthMapper.selectList Accum Cost: 1800
+# 5 Accum Times: 685 times, ID: cn.org.bjca.econtract.usercenter.mapper.person.UserMapper.selectById Accum Cost: 1572
+# 6 Accum Times: 582 times, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentAndSingByCond Accum Cost: 1537
+# 7 Accum Times: 402 times, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.getDocumentStatusCount Accum Cost: 1454
+# 8 Accum Times: 304 times, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentAttaMapper.selectOne Accum Cost: 814
+# 9 Accum Times: 278 times, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.selectById Accum Cost: 750
+# 10 Accum Times: 275 times, ID: cn.org.bjca.econtract.usercenter.mapper.enterprise.EmpEntRelationMapper.getUserJoinAllENtInfo Accum Cost: 733
+
+平均执行时间排行榜 Avg Cost top10:
+# 1 Avg Cost: 27.0 ms, ID: cn.org.bjca.econtract.daemon.mapper.quartz.SysJobMapper.selectList
+# 2 Avg Cost: 19.714285714285715 ms, ID: cn.org.bjca.econtract.usercenter.mapper.enterprise.EmpEntRelationMapper.selectEmpManagerPage
+# 3 Avg Cost: 12.5 ms, ID: cn.org.bjca.econtract.usercenter.mapper.enterprise.EmpEntRelationMapper.selectEnableEmpManager
+# 4 Avg Cost: 8.054945054945055 ms, ID: cn.org.bjca.econtract.usercenter.mapper.enterprise.EnterprisePaperMapper.selectEntInfoById
+# 5 Avg Cost: 7.62 ms, ID: cn.org.bjca.econtract.signcenter.mapper.documenttemplate.EcdocumentTemplateAttachmentMapper.updateById
+# 6 Avg Cost: 7.3283582089552235 ms, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentMapper.editDocumentById
+# 7 Avg Cost: 6.5 ms, ID: cn.org.bjca.econtract.usercenter.mapper.enterprise.TransferEntManagerMapper.insert
+# 8 Avg Cost: 6.0 ms, ID: cn.org.bjca.econtract.remote.mapper.cert.CertFailTaskMapper.insert
+# 9 Avg Cost: 5.0 ms, ID: cn.org.bjca.econtract.message.mapper.notice.NoticeMapper.update
+# 10 Avg Cost: 4.714285714285714 ms, ID: cn.org.bjca.econtract.signcenter.mapper.document.EcdocumentPresetMapper.updateById
+
+Process finished with exit code 0
