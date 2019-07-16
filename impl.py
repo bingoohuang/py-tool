@@ -11,26 +11,27 @@ find_impl = re.compile(r"""class\s+(\w+Impl)\b.+?\bimplements\b.*?\b(\w+Service)
 service = {}
 
 
-def add_service(impl_name, service_name):
-    if service_name not in service:
-        service[service_name] = [impl_name]
+def add_service(impl_name, service_class):
+    if service_class not in service:
+        service[service_class] = [impl_name]
     else:
-        service[service_name].append(impl_name)
+        service[service_class].append(impl_name)
 
 
 def walk_dir(root_dir):
     for root, dirs, files in os.walk(root_dir, True):
         for name in files:
-            if name.endswith("Impl.java"):
-                java = os.path.join(root, name)
-                # print(java)
+            if not name.endswith("Impl.java"):
+                continue
 
-                with open(java, 'r') as java_file:
-                    java_source = java_file.read()
+            java = os.path.join(root, name)
+            # print(java)
 
-                z = find_impl.search(java_source)
-                if z:
-                    add_service(z.group(1), z.group(2))
+            with open(java, 'r') as java_file:
+                java_source = java_file.read()
+
+            z = find_impl.search(java_source)
+            add_service(z.group(1), z.group(2)) if z else 0
 
 
 if __name__ == '__main__':
