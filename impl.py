@@ -6,7 +6,7 @@ import os
 import sys
 import re
 
-find_impl = re.compile(r"""class\s+(\w+Impl)\b.+?\bimplements\b.*?\b(\w+Service)\b""", re.X)
+find_impl = re.compile(r"""class\s+(\w+)\b.+?\bimplements\b.*?\b(\w+Service)\b""", re.DOTALL)
 
 service = {}
 
@@ -31,7 +31,9 @@ def walk_dir(root_dir):
                 java_source = java_file.read()
 
             z = find_impl.search(java_source)
-            add_service(z.group(1), z.group(2)) if z else 0
+            if z:
+                print(z.group(0))
+                add_service(z.group(1), z.group(2))
 
 
 if __name__ == '__main__':
