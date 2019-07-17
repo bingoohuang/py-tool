@@ -78,6 +78,8 @@ SOFTWARE.
 
 # Standard Python library modules
 import struct
+import time
+from datetime import timedelta
 
 # pip3 uninstall Crypto
 # pip3 uninstall pycrypto
@@ -97,7 +99,6 @@ class FPEInteger:
 
     def __init__(self, key, rounds=10, radix=2, width=32):
         """key is a 16- 24- or 32-byte string."""
-        self.key = key
         self.aes_obj = AES.new(key, AES.MODE_ECB)
         self.rounds = rounds
         part_widths = [(width + 1) // 2, width // 2]
@@ -192,13 +193,14 @@ if __name__ == "__main__":
 
     encrypted_outputs = set()
     start = 0
-    run_range = 160
+    run_range = 1000000
+    start_time = time.monotonic()
     # run_range = radix**width
     for i in range(start, start + run_range):
         try:
             encrypted = fpe_obj.encrypt(i)
             decrypted = fpe_obj.decrypt(encrypted)
-            if should_print:
+            if should_print and (i < 10 or i > run_range - 10):
                 print("{0:0{width}{base}}   {1:0{width}{base}}".format(i, encrypted, decrypted,
                                                                        width=print_width, base=print_base))
             assert (encrypted not in encrypted_outputs)
@@ -207,3 +209,32 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             print('Completed {0} calculations'.format(i))
             break
+
+    # https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution
+    end_time = time.monotonic()
+    print(timedelta(seconds=end_time - start_time))
+
+"""Output:
+Radix 10, width 7
+Printing as format 'd', width 7
+0000000   7476086
+0000001   6861324
+0000002   2578807
+0000003   8655078
+0000004   1326749
+0000005   2936356
+0000006   1009534
+0000007   1127857
+0000008   1711684
+0000009   8330130
+0999991   8924997
+0999992   9217666
+0999993   7328730
+0999994   1999893
+0999995   3445725
+0999996   3340822
+0999997   9459211
+0999998   7954412
+0999999   0585854
+0:00:31.457330
+"""
