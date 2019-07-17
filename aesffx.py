@@ -106,27 +106,44 @@ class FPEInteger:
 
         # Pick a suitable block encryption function, with a large enough block size, and also
         # keeping any bias of the final modulo operation reasonably small.
-        block_size = radix ** width
-        self.block_size = block_size
-        if ((block_size <= 2 ** 32) or
-                ((block_size <= 2 ** 64) and ((2 ** 128 % block_size) == 0))):
-            self.block_encrypt_func = self.block_encrypt_func_small
-        else:
-            self.block_encrypt_func = self.block_encrypt_func_large
+        # block_size = radix ** width
+        # print("block_size=", block_size, ", 2 ** 32=", 2 ** 32, ", 2 ** 64=", 2 ** 64, ", 2 ** 128=", 2 ** 128)
+        # use_small = block_size <= 2 ** 32 or block_size <= 2 ** 64 and 2 ** 128 % block_size == 0
+        # self.block_encrypt_func = self._block_encrypt_func_small if use_small else self._block_encrypt_func_large
+        self.block_encrypt_func = self._block_encrypt_func_large
 
-    def split_message(self, message):
+    def encrypt(self, message):
+        """message is an integer. Returns an integer."""
+        work = self._split_message(message)
+        j, k = 0, 1
+        for round_num in range(self.rounds):
+            temp = self.block_encrypt_func(work[j], round_num, self.modulos[k])
+            work[k] = (work[k] + temp) % self.modulos[k]
+            j, k = k, j
+        return self._join_message(work)
+
+    def decrypt(self, message):
+        """message is an integer. Returns an integer."""
+        work = self._split_message(message)
+        j, k = (self.rounds - 1) % 2, self.rounds % 2
+        for round_num in range(self.rounds - 1, -1, -1):
+            temp = self.block_encrypt_func(work[j], round_num, self.modulos[k])
+            work[k] = (work[k] - temp) % self.modulos[k]
+            j, k = k, j
+        return self._join_message(work)
+
+    def _split_message(self, message):
         """Split message into working parts. Return a list of parts."""
         work_0 = message % self.modulos[0]
-        message //= self.modulos[0]
-        work_1 = message % self.modulos[1]
+        work_1 = message // self.modulos[0] % self.modulos[1]
         return [work_0, work_1]
 
-    def join_message(self, work):
+    def _join_message(self, work):
         """Join list of message parts back into message. Return the message.
         Inverse of self.split_message()."""
         return (work[1] * self.modulos[0]) + work[0]
 
-    def block_encrypt_func_small(self, work_val, round_num, out_modulo):
+    def _block_encrypt_func_small(self, work_val, round_num, out_modulo):
         """Block encryption function--small one for block size 2**32 or smaller."""
         byte_data = struct.pack("<QQ", round_num, work_val)
         encrypt_data = self.aes_obj.encrypt(byte_data)
@@ -134,7 +151,7 @@ class FPEInteger:
         temp %= out_modulo
         return temp
 
-    def block_encrypt_func_large(self, work_val, round_num, out_modulo):
+    def _block_encrypt_func_large(self, work_val, round_num, out_modulo):
         """Block encryption function--large one for block size bigger than 2**32."""
         byte_data = struct.pack("<QQ", round_num, work_val)
         encrypt_data = self.aes_obj.encrypt(byte_data)
@@ -142,26 +159,6 @@ class FPEInteger:
         temp = (temp_hi << 64) | temp_lo
         temp %= out_modulo
         return temp
-
-    def encrypt(self, message):
-        """message is an integer. Returns an integer."""
-        work = self.split_message(message)
-        i_from, i_to = 0, 1
-        for round_num in range(self.rounds):
-            temp = self.block_encrypt_func(work[i_from], round_num, self.modulos[i_to])
-            work[i_to] = (work[i_to] + temp) % self.modulos[i_to]
-            i_from, i_to = i_to, i_from
-        return self.join_message(work)
-
-    def decrypt(self, message):
-        """message is an integer. Returns an integer."""
-        work = self.split_message(message)
-        i_from, i_to = (self.rounds - 1) % 2, self.rounds % 2
-        for round_num in range(self.rounds - 1, -1, -1):
-            temp = self.block_encrypt_func(work[i_from], round_num, self.modulos[i_to])
-            work[i_to] = (work[i_to] - temp) % self.modulos[i_to]
-            i_from, i_to = i_to, i_from
-        return self.join_message(work)
 
 
 if __name__ == "__main__":
@@ -200,8 +197,8 @@ if __name__ == "__main__":
         try:
             encrypted = fpe_obj.encrypt(i)
             decrypted = fpe_obj.decrypt(encrypted)
-            if should_print and (i < 10 or i > run_range - 10):
-                print("{0:0{width}{base}}   {1:0{width}{base}}".format(i, encrypted, decrypted,
+            if should_print and (i < start + 10 or i > run_range - 10):
+                print("{0:0{width}{base}}   {1:0{width}{base}}".format(i, encrypted,
                                                                        width=print_width, base=print_base))
             assert (encrypted not in encrypted_outputs)
             encrypted_outputs.add(encrypted)
