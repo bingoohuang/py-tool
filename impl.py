@@ -6,7 +6,7 @@ import os
 import sys
 import re
 
-find_impl = re.compile(r"""class\s+(\w+)\b.+?\bimplements\b.*?\b(\w+Service)\b""", re.DOTALL)
+find_impl = re.compile(r"""class\s+(\w+)\s*(extends\s+\w+)?\s*implements\s+(\w+)\s*\{""", re.DOTALL)
 
 service = {}
 
@@ -33,11 +33,11 @@ def walk_dir(root_dir):
             z = find_impl.search(java_source)
             if z:
                 print(z.group(0))
-                add_service(z.group(1), z.group(2))
+                add_service(z.group(1), z.group(3))
 
 
 if __name__ == '__main__':
-    logfile = sys.argv[1] if len(sys.argv) >= 2 else "/Users/bingoobjca/bjcagit/econtract"
+    logfile = sys.argv[1] if len(sys.argv) >= 2 else "."
     walk_dir(logfile)
 
     print("total service that has impls :", len(service))
